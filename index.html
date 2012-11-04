@@ -1,0 +1,90 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css">
+		<script src="js/jquery.js"></script>
+		<script src="js/underscore.js"></script>
+		<script type="text/javascript" src="js/leaflet/leaflet.js"></script>
+		<script type="text/javascript" src="js/wax/wax.leaf.min.js"></script>
+		<link rel="stylesheet" href="css/leaflet/leaflet.css" />
+    	<!--[if lte IE 8]><link rel="stylesheet" href="/css/leaflet/leaflet.ie.css" /><![endif]-->
+	</head>
+	<body>
+		<h1> Skillshare Venues</h1>
+		<div id= "venues-view">
+    		<div id="map" style="width: 800px; height: 400px">
+    	</div>
+		<div id="listings">
+		</div>
+		<ul id="content-view">
+		</ul>
+		<script type="text/template" id="listing-template">
+		<li>
+			<a class= "venue-title"><%= venue_title %></a>
+			<div class= "venue-category"><%= venue_category %></div>
+			<div class="venue-street-address"><%= venue_street_address %></div>
+			<div class="venue-city"><%= venue_city %></div>
+			<div class="venue-state"><%= venue_state %></div>
+			<div class="venue-zipcode"><%= venue_zipcode %></div>
+			<div class="venue-phone"><%= venue_phone %></div><div class="venue-twitter"><%= venue_twitter %></div>
+		</li>
+		</script>		
+		<script src="js/backbone.js"></script>
+		<script src="js/models.js"></script>
+		<script src="js/collections.js"></script>
+		<script src="js/views.js"></script>
+		<script>
+			var userLat = 132;
+			var userLng = 13;
+
+			// controller
+			var app = {
+
+				init: function() {
+					var phillyId = "13679564";
+					var brooklynId = "13679564";
+					var NYCId ="13679564";
+					oauthToken ="2RDA1VKIMZOHBE3UVDYR1L5OMVETSM2RN42OAZGQFE5V3LMQ&v=20120627";
+					var cityId = null;
+					this.venuesList = new CitiesCollection();
+					var phillyVenues = new CityVenues({});
+					var brooklynVenues = new CityVenues({});
+					var NYCVenues = new CityVenues({});
+					brooklynVenues.url = "https://api.foursquare.com/v2/lists/"+brooklynId+"/tips?oauth_token="+oauthToken;
+					phillyVenues.url = "https://api.foursquare.com/v2/lists/"+phillyId+"/tips?oauth_token="+oauthToken;
+					NYCVenues.url = "https://api.foursquare.com/v2/lists/"+NYCId+"/tips?oauth_token="+oauthToken;
+					brooklynVenues.cityId = "brooklyn";
+					phillyVenues.cityId = "Philly";
+					NYCVenues.cityId = "NYC";
+				brooklynVenues.fetch({
+					success:function(model, response){
+						console.log('success');
+					}
+				});
+				phillyVenues.fetch({
+					success:function(model,response){
+						console.log('success');
+					}
+				});;
+				NYCVenues.fetch({
+					success:function(model, response){
+						console.log('success');
+						new VenuesView({model:model});
+					}
+				});
+				},
+
+				fetchSuccess: function () {
+					this.venuesList.fetchSuccess();
+				},
+
+				renderView: function(model) {
+					new VenuesView({model:model});
+				}
+
+			}
+
+			app.init();
+
+		</script>
+		</body>
+</html>
