@@ -21,11 +21,6 @@ var CitiesCollection = Backbone.Collection.extend({
 		this.each(function(city){
 			city.fetch();
 		});
-
-		
-		// callback?
-
-
 	},
 
 
@@ -42,11 +37,7 @@ var CitiesCollection = Backbone.Collection.extend({
 	},
 
 	fetchSuccess: function(){
-		// get 0th city and make models for it, add to collection, then give that collection a view
 		var closestCity = this.at(0);
-
-		//app.renderView(closestCity);
-
 		
 	}
 });
